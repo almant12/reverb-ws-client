@@ -10,6 +10,7 @@
     "module": "nodenext",
     "target": "esnext",
     "types": ["node"],
+
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
@@ -33,6 +34,7 @@
     // "noPropertyAccessFromIndexSignature": true,
 
     // Recommended Options
+    "ignoreDeprecations": "6.0",
     "strict": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": false,

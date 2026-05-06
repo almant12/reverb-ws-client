@@ -12,6 +12,7 @@ export class Channel {
 
   async subscribe() {
     if (this.subscribed) return;
+
     const isPrivate = this.name.startsWith("private-");
     const isPresence = this.name.startsWith("presence-");
 
@@ -23,21 +24,26 @@ export class Channel {
       if (!socketId) {
         throw new Error("[Reverb] socket_id not ready yet");
       }
+
       const auth = await this.client.authorize(socketId, this.name);
+
       authPayload = {
         auth: auth.auth,
         ...(auth.channel_data ? { channel_data: auth.channel_data } : {}),
       };
-
-      this.client.send({
-        event: "pusher:subscribe",
-        data: {
-          channel: this.name,
-          ...authPayload,
-        },
-      });
     }
+
+    this.client.send({
+      event: "pusher:subscribe",
+      data: {
+        channel: this.name,
+        ...authPayload,
+      },
+    });
+
+    this.subscribed = true;
   }
+  
   listen(event: string, callback: EventCallback) {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());

@@ -2,7 +2,9 @@ export type ReverbScheme = "ws" | "wss";
 
 export type ChannelType = "public" | "private" | "presence";
 
-export type EventCallback<T = unknown> = (data: T) => void;
+export type EventCallback<T = unknown> = {
+  bivarianceHack(data: T): void;
+}["bivarianceHack"];
 
 export type GetTokenFunction = () => string | Promise<string>;
 

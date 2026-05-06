@@ -1,4 +1,3 @@
-// src/ConnectionManager.ts
 
 import type {
   ConnectionState,

@@ -43,7 +43,7 @@ export class Channel {
 
     this.subscribed = true;
   }
-  
+
   listen(event: string, callback: EventCallback) {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());

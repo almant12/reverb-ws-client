@@ -49,6 +49,10 @@ export class ReverbClient {
     return this.socketId;
   }
 
+  getOptions() {
+    return this.options;
+  }
+
   authorize(socketId: string, channelName: string): Promise<AuthResponse> {
     if (!this.options.authorizer) {
       throw new Error("[Reverb] authorizer is required for private channels");

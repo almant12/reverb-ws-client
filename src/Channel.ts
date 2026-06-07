@@ -1,14 +1,20 @@
+import { Logger } from "./logger";
 import { ReverbClient } from "./ReverbClient";
 import { EventCallback } from "./types";
 
 export class Channel {
   private listeners = new Map<string, Set<EventCallback>>();
   private subscribed = false;
+  private logger: Logger;
 
   constructor(
     private name: string,
     private client: ReverbClient,
-  ) {}
+  ) {
+    this.logger = new Logger({
+      debug: this.client.getOptions().debug ?? false,
+    });
+  }
 
   async subscribe() {
     if (this.subscribed) return;
@@ -52,7 +58,7 @@ export class Channel {
     this.listeners.get(event)!.add(callback);
 
     this.subscribe().catch((err) => {
-      console.error("[Reverb] subscribe failed", err);
+      this.logger.error("[Reverb] subscribe failed", err);
     });
 
     return this;

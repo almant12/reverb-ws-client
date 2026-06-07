@@ -1,4 +1,4 @@
-
+import { Logger } from "./logger";
 import type {
   ConnectionState,
   PusherIncomingMessage,
@@ -18,6 +18,7 @@ export class ConnectionManager {
   constructor(
     private options: ReverbClientOptions,
     private onMessage: (msg: PusherIncomingMessage) => void,
+    private logger: Logger,
   ) {}
 
   connect() {
@@ -32,7 +33,7 @@ export class ConnectionManager {
     this.ws.onopen = () => {
       this.state = "connected";
       this.reconnectAttempts = 0;
-      console.log("[Reverb] Connected");
+      this.logger.log("[Reverb] Connected");
     };
 
     this.ws.onmessage = (event) => {
@@ -40,18 +41,18 @@ export class ConnectionManager {
         const parsed = JSON.parse(event.data) as PusherIncomingMessage;
         this.onMessage(parsed);
       } catch (err) {
-        console.warn("[Reverb] Failed to parse message", err);
+        this.logger.warn("[Reverb] WebSocket error", err);
       }
     };
 
     this.ws.onerror = (err) => {
-      console.warn("[Reverb] WebSocket error", err);
+      this.logger.warn("[Reverb] WebSocket error", err);
     };
 
     this.ws.onclose = () => {
       this.ws = null;
       this.state = "disconnected";
-      console.log("[Reverb] Disconnected");
+      this.logger.log("[Reverb] Disconnected");
 
       if (!this.manuallyDisconnected) {
         this.reconnect();
@@ -72,7 +73,7 @@ export class ConnectionManager {
 
   send(data: PusherOutgoingMessage | object) {
     if (!this.ws || this.state !== "connected") {
-      console.warn("[Reverb] Cannot send, socket not connected");
+      this.logger.warn("[Reverb] Cannot send, socket not connected");
       return;
     }
 
@@ -93,7 +94,7 @@ export class ConnectionManager {
 
   private reconnect() {
     if (this.reconnectAttempts >= this.maxReconnectAttempts) {
-      console.warn("[Reverb] Max reconnect attempts reached");
+      this.logger.warn("[Reverb] Max reconnect attempts reached");
       return;
     }
 
@@ -101,7 +102,7 @@ export class ConnectionManager {
     this.reconnectAttempts++;
 
     setTimeout(() => {
-      console.log("[Reverb] Reconnecting...");
+      this.logger.log("[Reverb] Reconnecting...");
       this.connect();
     }, this.reconnectDelay);
   }

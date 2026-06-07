@@ -15,11 +15,16 @@ export class ConnectionManager {
   private reconnectDelay = 2000;
   private manuallyDisconnected = false;
 
+  private logger: Logger;
+
   constructor(
     private options: ReverbClientOptions,
     private onMessage: (msg: PusherIncomingMessage) => void,
-    private logger: Logger,
-  ) {}
+  ) {
+    this.logger = new Logger({
+      debug: options.debug ?? false,
+    });
+  }
 
   connect() {
     if (this.state === "connecting" || this.state === "connected") return;

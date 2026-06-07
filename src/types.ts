@@ -14,6 +14,7 @@ export type ReverbClientOptions = {
   port?: number;
   scheme?: ReverbScheme;
   authorizer?: Authorizer;
+  debug?: boolean;
 };
 
 export type PusherIncomingMessage = {

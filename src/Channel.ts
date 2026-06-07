@@ -76,6 +76,18 @@ export class Channel {
     return this;
   }
 
+  unsubscribe() {
+    this.client.send({
+      event: "pusher:unsubscribe",
+      data: {
+        channel: this.name,
+      },
+    });
+
+    this.listeners.clear();
+    this.subscribed = false;
+  }
+
   handleEvent(event: string, data: unknown) {
     const callbacks = this.listeners.get(event);
 

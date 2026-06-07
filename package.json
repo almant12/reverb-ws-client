@@ -1,6 +1,6 @@
 {
   "name": "reverb-ws-client",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A lightweight Laravel Reverb client for React Native using the Pusher protocol.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

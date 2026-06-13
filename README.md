@@ -66,6 +66,8 @@ const client = new ReverbClient({
     return response.json();
   },
 });
+
+client.connect();
 ```
 
 ## Configuration Options

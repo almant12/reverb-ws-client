@@ -21,6 +21,7 @@ export class ReverbClient {
     );
   }
 
+  
   connect() {
     this.connection.connect();
   }

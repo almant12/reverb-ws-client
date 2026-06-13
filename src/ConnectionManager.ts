@@ -63,7 +63,7 @@ export class ConnectionManager {
         this.reconnect();
       }
     };
-  }
+  }x
 
   disconnect() {
     this.manuallyDisconnected = true;
